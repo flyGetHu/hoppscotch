@@ -784,6 +784,20 @@ export const INFRA_CONFIG_OPERATION_NOT_ALLOWED =
   'infra_config/operation_not_allowed';
 
 /**
+ * Error message for when the onboarding status fetch fails
+ * (InfraConfigService)
+ */
+export const INFRA_CONFIG_FETCH_FAILED =
+  'infra_config/fetch_failed' as const;
+
+/**
+ * Onboarding has already been completed and cannot be re-run
+ * (OnboardingController)
+ */
+export const ONBOARDING_CANNOT_BE_RERUN =
+  'onboarding/cannot_be_rerun' as const;
+
+/**
  * Error message for when the database table does not exist
  * (InfraConfigService)
  */
