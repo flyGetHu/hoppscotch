@@ -2252,6 +2252,7 @@
     "error_loading": "Failed to load organizations",
     "inactive_orgs": "Inactive Organizations",
     "no_orgs_found": "No organizations found",
+    "no_active_orgs_found": "No active organizations",
     "organizations_for": "Organizations for {email}",
     "multi_account_notice": "Each organization keeps its own login, using the last account accessed.",
     "inactive_orgs_tooltip": "Contact support for assistance."
