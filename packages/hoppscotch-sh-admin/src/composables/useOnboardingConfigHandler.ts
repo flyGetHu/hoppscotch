@@ -53,7 +53,7 @@ export type OnBoardingSummary = {
 };
 
 function mapOAuthProviders(
-  configs: Partial<Record<InfraConfigEnum, string>>
+  configs: Partial<Record<InfraConfigEnum, string>>,
 ): Configs['oAuthProviders'] {
   return {
     GOOGLE: {
@@ -85,7 +85,7 @@ function mapOAuthProviders(
 }
 
 function mapMailerConfigs(
-  configs: Partial<Record<InfraConfigEnum, string>>
+  configs: Partial<Record<InfraConfigEnum, string>>,
 ): Configs['mailerConfigs'] {
   return {
     MAILER_SMTP_ENABLE: configs.MAILER_SMTP_ENABLE ?? '',
@@ -139,7 +139,7 @@ export function useOnboardingConfigHandler() {
   const toggleConfig = (key: EnabledConfig | 'OAUTH' | 'EMAIL') => {
     if (key === 'OAUTH') {
       enabledConfigs.value = enabledConfigs.value.filter(
-        (c) => !['GOOGLE', 'GITHUB', 'MICROSOFT', 'FEISHU'].includes(c)
+        (c) => !['GOOGLE', 'GITHUB', 'MICROSOFT', 'FEISHU'].includes(c),
       );
     }
 
@@ -147,7 +147,7 @@ export function useOnboardingConfigHandler() {
       const hasEmail = enabledConfigs.value.includes('EMAIL');
       const hasMailer = enabledConfigs.value.includes('MAILER');
       enabledConfigs.value = enabledConfigs.value.filter(
-        (c) => c !== 'EMAIL' && c !== 'MAILER'
+        (c) => c !== 'EMAIL' && c !== 'MAILER',
       );
       if (!hasEmail || !hasMailer) {
         enabledConfigs.value.push('EMAIL', 'MAILER');
@@ -262,7 +262,7 @@ export function useOnboardingConfigHandler() {
     }
 
     const relevantKeys = Object.keys(configs).filter((key) =>
-      enabledConfigs.value.includes(key.split('_')[0] as EnabledConfig)
+      enabledConfigs.value.includes(key.split('_')[0] as EnabledConfig),
     );
 
     const neededKeys = filterNeededConfigs(relevantKeys);
@@ -275,7 +275,7 @@ export function useOnboardingConfigHandler() {
       'MAILER_SMTP_PASSWORD',
     ]);
     const allFilled = neededKeys.every(
-      (key) => configs[key] || optionalSmtpKeys.has(key)
+      (key) => configs[key] || optionalSmtpKeys.has(key),
     );
 
     if (!allFilled) {
@@ -284,7 +284,7 @@ export function useOnboardingConfigHandler() {
           toast.error(
             t('onboarding.please_fill_configurations', {
               fieldName: makeReadableKey(key),
-            })
+            }),
           );
       });
       return;
@@ -311,8 +311,8 @@ export function useOnboardingConfigHandler() {
       Object.entries(configs).filter(
         ([key, val]) =>
           enabledConfigs.value.includes(key.split('_')[0] as EnabledConfig) &&
-          (val || optionalSmtpKeys.has(key))
-      )
+          (val || optionalSmtpKeys.has(key)),
+      ),
     );
   };
 
@@ -342,7 +342,7 @@ export function useOnboardingConfigHandler() {
     }
 
     const filteredEnabledConfigs = enabledConfigs.value.filter(
-      (config) => config !== 'OAUTH' && config !== 'MAILER'
+      (config) => config !== 'OAUTH' && config !== 'MAILER',
     );
 
     const configWithAuth = {
@@ -415,7 +415,7 @@ export function useOnboardingConfigHandler() {
         enableConfig('EMAIL');
       }
     },
-    { deep: true, immediate: true }
+    { deep: true, immediate: true },
   );
 
   return {

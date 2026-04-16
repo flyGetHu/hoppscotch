@@ -172,7 +172,7 @@ const props = defineProps<{ isFirstTimeSetup?: boolean }>();
 const emit = defineEmits<{
   (
     e: 'complete-onboarding',
-    payload: { submittingConfigs: boolean; summary: OnBoardingSummary }
+    payload: { submittingConfigs: boolean; summary: OnBoardingSummary },
   ): void;
 }>();
 
@@ -213,10 +213,10 @@ watch(
   () => enabledConfigs.value,
   (configs) => {
     isOAuthEnabled.value = OAuthProviders.some((provider) =>
-      configs.includes(provider)
+      configs.includes(provider),
     );
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 watch(
@@ -230,7 +230,7 @@ watch(
       selectedOptions.value = ['OAUTH', 'SMTP'];
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 const isSelected = (option: SelectedOption) =>
@@ -240,14 +240,14 @@ const isSmtpEnabled = computed(() => enabledConfigs.value.includes('MAILER'));
 
 const updateOAuthEnabled = () => {
   isOAuthEnabled.value = OAuthProviders.some((provider) =>
-    enabledConfigs.value.includes(provider)
+    enabledConfigs.value.includes(provider),
   );
 };
 
 const toggleSelectedOption = (option: SelectedOption) => {
   if (selectedOptions.value.includes(option as any)) {
     selectedOptions.value = selectedOptions.value.filter(
-      (opt) => opt !== option
+      (opt) => opt !== option,
     );
   } else {
     selectedOptions.value.push(option as any);
