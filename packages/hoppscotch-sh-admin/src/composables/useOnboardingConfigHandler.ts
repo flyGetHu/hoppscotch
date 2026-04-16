@@ -6,7 +6,7 @@ import { InfraConfigEnum } from '~/helpers/backend/graphql';
 import { getLocalConfig, setLocalConfig } from '~/helpers/localpersistence';
 import { makeReadableKey } from '~/helpers/utils/readableKey';
 
-export type OAuthProvider = 'GOOGLE' | 'GITHUB' | 'MICROSOFT';
+export type OAuthProvider = 'GOOGLE' | 'GITHUB' | 'MICROSOFT' | 'FEISHU';
 export type EnabledConfig = OAuthProvider | 'OAUTH' | 'MAILER' | 'EMAIL';
 
 // common OAuth keys used across providers
@@ -38,6 +38,7 @@ export type Configs = {
     GOOGLE: OAuthConfig<OAuthKeys, 'GOOGLE'>;
     GITHUB: OAuthConfig<OAuthKeys, 'GITHUB'>;
     MICROSOFT: OAuthConfig<MicrosoftKeys, 'MICROSOFT'>;
+    FEISHU: OAuthConfig<OAuthKeys, 'FEISHU'>;
   };
   mailerConfigs: {
     [K in `MAILER_${MailerConfigKeys}`]: string;
@@ -73,6 +74,12 @@ function mapOAuthProviders(
       MICROSOFT_CALLBACK_URL: '',
       MICROSOFT_SCOPE: configs.MICROSOFT_SCOPE ?? '',
       MICROSOFT_TENANT: configs.MICROSOFT_TENANT ?? '',
+    },
+    FEISHU: {
+      FEISHU_CLIENT_ID: configs.FEISHU_CLIENT_ID ?? '',
+      FEISHU_CLIENT_SECRET: configs.FEISHU_CLIENT_SECRET ?? '',
+      FEISHU_CALLBACK_URL: '',
+      FEISHU_SCOPE: configs.FEISHU_SCOPE ?? '',
     },
   };
 }
@@ -132,7 +139,7 @@ export function useOnboardingConfigHandler() {
   const toggleConfig = (key: EnabledConfig | 'OAUTH' | 'EMAIL') => {
     if (key === 'OAUTH') {
       enabledConfigs.value = enabledConfigs.value.filter(
-        (c) => !['GOOGLE', 'GITHUB', 'MICROSOFT'].includes(c)
+        (c) => !['GOOGLE', 'GITHUB', 'MICROSOFT', 'FEISHU'].includes(c)
       );
     }
 
@@ -174,6 +181,9 @@ export function useOnboardingConfigHandler() {
     }
     if (oAuth.MICROSOFT.MICROSOFT_CLIENT_ID) {
       oAuth.MICROSOFT.MICROSOFT_CALLBACK_URL = `${base}/auth/microsoft/callback`;
+    }
+    if (oAuth.FEISHU.FEISHU_CLIENT_ID) {
+      oAuth.FEISHU.FEISHU_CALLBACK_URL = `${base}/auth/feishu/callback`;
     }
   };
 
@@ -319,6 +329,7 @@ export function useOnboardingConfigHandler() {
       ...currentConfigs.value.oAuthProviders.GOOGLE,
       ...currentConfigs.value.oAuthProviders.GITHUB,
       ...currentConfigs.value.oAuthProviders.MICROSOFT,
+      ...currentConfigs.value.oAuthProviders.FEISHU,
       ...currentConfigs.value.mailerConfigs,
     };
 

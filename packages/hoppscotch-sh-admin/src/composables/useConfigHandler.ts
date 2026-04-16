@@ -22,6 +22,7 @@ import {
   CUSTOM_MAIL_CONFIGS,
   ConfigSection,
   ConfigTransform,
+  FEISHU_CONFIGS,
   GITHUB_CONFIGS,
   GOOGLE_CONFIGS,
   MAIL_CONFIGS,
@@ -119,6 +120,16 @@ export function useConfigHandler(updatedConfigs?: ServerConfigs) {
             callback_url: getFieldValue(InfraConfigEnum.MicrosoftCallbackUrl),
             scope: getFieldValue(InfraConfigEnum.MicrosoftScope),
             tenant: getFieldValue(InfraConfigEnum.MicrosoftTenant),
+          },
+        },
+        feishu: {
+          name: 'feishu',
+          enabled: allowedAuthProviders.value.includes(AuthProvider.Feishu),
+          fields: {
+            client_id: getFieldValue(InfraConfigEnum.FeishuClientId),
+            client_secret: getFieldValue(InfraConfigEnum.FeishuClientSecret),
+            callback_url: getFieldValue(InfraConfigEnum.FeishuCallbackUrl),
+            scope: getFieldValue(InfraConfigEnum.FeishuScope),
           },
         },
       },
@@ -266,6 +277,7 @@ export function useConfigHandler(updatedConfigs?: ServerConfigs) {
       config.providers.github,
       config.providers.google,
       config.providers.microsoft,
+      config.providers.feishu,
       config.mailConfigs,
       config.rateLimitConfigs,
       config.tokenConfigs,
@@ -372,6 +384,11 @@ export function useConfigHandler(updatedConfigs?: ServerConfigs) {
         fields: updatedConfigs?.providers.microsoft.fields,
       },
       {
+        config: FEISHU_CONFIGS,
+        enabled: updatedConfigs?.providers.feishu.enabled,
+        fields: updatedConfigs?.providers.feishu.fields,
+      },
+      {
         config: MAIL_CONFIGS,
         enabled: updatedConfigs?.mailConfigs.enabled,
         fields: mailConfigFields,
@@ -447,6 +464,12 @@ export function useConfigHandler(updatedConfigs?: ServerConfigs) {
       {
         provider: AuthProvider.Github,
         status: updatedConfigs?.providers.github.enabled
+          ? ServiceStatus.Enable
+          : ServiceStatus.Disable,
+      },
+      {
+        provider: AuthProvider.Feishu,
+        status: updatedConfigs?.providers.feishu.enabled
           ? ServiceStatus.Enable
           : ServiceStatus.Disable,
       },
