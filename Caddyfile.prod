@@ -1,0 +1,48 @@
+# ============================================
+# Hoppscotch 生产环境 Caddyfile（内网 IP 直连）
+#
+# 使用前：将 0.0.0.0 替换为服务器实际内网/公网 IP
+# ============================================
+
+{
+	admin off
+	persist_config off
+}
+
+:80 {
+	# Serve the `selfhost-web` SPA by default
+	root * /site/selfhost-web
+	file_server
+
+	handle_path /admin* {
+		root * /site/sh-admin-subpath-access
+		file_server
+
+		try_files {path} /
+	}
+
+	handle_path /backend* {
+		@mock {
+			header_regexp Host ^[^.]+\.mock\..*$
+		}
+
+		handle @mock {
+			rewrite * /mock{uri}
+			reverse_proxy localhost:8080
+		}
+
+		handle {
+			reverse_proxy localhost:8080
+		}
+	}
+
+	handle_path /desktop-app-server* {
+		reverse_proxy localhost:3200
+	}
+
+	handle {
+		root * /site/selfhost-web
+		file_server
+		try_files {path} /
+	}
+}

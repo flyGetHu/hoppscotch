@@ -1,0 +1,37 @@
+# 生产环境覆盖 — 基于官方 docker-compose.yml，仅做安全加固
+# 使用方式: docker compose --profile default -f docker-compose.override.prod.yml up -d
+#
+# 核心改动:
+#   1. DB 端口不暴露到网络
+#   2. AIO 仅暴露 80（HTTP，内网白名单访问）
+#   3. AIO 自动重启 + 等待迁移完成
+#   4. 挂载自定义 Caddyfile
+
+services:
+  hoppscotch-db:
+    image: postgres:15-alpine
+    ports: []                          # 不暴露 DB 端口
+    environment:
+      POSTGRES_USER: hoppscotch
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-hoppscotch}
+      POSTGRES_DB: hoppscotch
+
+  hoppscotch-migrate:
+    image: hoppscotch-aio:feishu
+    # AIO 镜像默认入口是 aio_run.mjs，必须显式指定迁移命令
+    command: ["sh", "-c", "cd /dist/backend && npx prisma migrate deploy"]
+    env_file:
+      - .env
+
+  hoppscotch-aio:
+    image: hoppscotch-aio:feishu          # 使用预加载的镜像（非 build）
+    env_file:
+      - .env
+    restart: unless-stopped
+    ports:
+      - "80:80"                        # HTTP（防火墙白名单限制访问）
+    volumes:
+      - ./Caddyfile.prod:/etc/caddy/aio-subpath-access.Caddyfile:ro
+    depends_on:
+      hoppscotch-migrate:
+        condition: service_completed_successfully
