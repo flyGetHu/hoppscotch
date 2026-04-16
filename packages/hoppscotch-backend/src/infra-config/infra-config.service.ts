@@ -307,6 +307,13 @@ export class InfraConfigService implements OnModuleInit, OnModuleDestroy {
           configMap.MICROSOFT_SCOPE &&
           configMap.MICROSOFT_TENANT
         );
+      case AuthProvider.FEISHU:
+        return (
+          configMap.FEISHU_CLIENT_ID &&
+          configMap.FEISHU_CLIENT_SECRET &&
+          configMap.FEISHU_CALLBACK_URL &&
+          configMap.FEISHU_SCOPE
+        );
       case AuthProvider.EMAIL:
         if (configMap.MAILER_SMTP_ENABLE !== 'true') return false;
         if (configMap.MAILER_USE_CUSTOM_CONFIGS === 'true') {
@@ -767,12 +774,16 @@ export class InfraConfigService implements OnModuleInit, OnModuleDestroy {
         case InfraConfigEnum.MICROSOFT_CLIENT_SECRET:
         case InfraConfigEnum.MICROSOFT_SCOPE:
         case InfraConfigEnum.MICROSOFT_TENANT:
+        case InfraConfigEnum.FEISHU_CLIENT_ID:
+        case InfraConfigEnum.FEISHU_CLIENT_SECRET:
+        case InfraConfigEnum.FEISHU_SCOPE:
           if (!value) return fail();
           break;
 
         case InfraConfigEnum.GOOGLE_CALLBACK_URL:
         case InfraConfigEnum.GITHUB_CALLBACK_URL:
         case InfraConfigEnum.MICROSOFT_CALLBACK_URL:
+        case InfraConfigEnum.FEISHU_CALLBACK_URL:
           if (!validateUrl(value)) return fail();
           break;
 

@@ -65,6 +65,12 @@ export function getAuthProviderRequiredKeys(
       InfraConfigEnum.MICROSOFT_SCOPE,
       InfraConfigEnum.MICROSOFT_TENANT,
     ],
+    [AuthProvider.FEISHU]: [
+      InfraConfigEnum.FEISHU_CLIENT_ID,
+      InfraConfigEnum.FEISHU_CLIENT_SECRET,
+      InfraConfigEnum.FEISHU_CALLBACK_URL,
+      InfraConfigEnum.FEISHU_SCOPE,
+    ],
     [AuthProvider.EMAIL]:
       env['INFRA'].MAILER_USE_CUSTOM_CONFIGS === 'true'
         ? [
@@ -309,6 +315,26 @@ export async function getDefaultInfraConfigs(): Promise<DefaultInfraConfig[]> {
       isEncrypted: false,
     },
     {
+      name: InfraConfigEnum.FEISHU_CLIENT_ID,
+      value: null,
+      isEncrypted: true,
+    },
+    {
+      name: InfraConfigEnum.FEISHU_CLIENT_SECRET,
+      value: null,
+      isEncrypted: true,
+    },
+    {
+      name: InfraConfigEnum.FEISHU_CALLBACK_URL,
+      value: null,
+      isEncrypted: false,
+    },
+    {
+      name: InfraConfigEnum.FEISHU_SCOPE,
+      value: null,
+      isEncrypted: false,
+    },
+    {
       name: InfraConfigEnum.VITE_ALLOWED_AUTH_PROVIDERS,
       value: null,
       isEncrypted: false,
@@ -522,6 +548,7 @@ export async function buildDerivedEnv() {
       path: '/auth/microsoft/callback',
     },
     { key: InfraConfigEnum.GITHUB_CALLBACK_URL, path: '/auth/github/callback' },
+    { key: InfraConfigEnum.FEISHU_CALLBACK_URL, path: '/auth/feishu/callback' },
   ];
   // Update callback URLs if they don't match the backend
   for (const { key, path } of callbackConfigs) {

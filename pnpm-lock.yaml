@@ -291,6 +291,9 @@ importers:
       passport:
         specifier: 0.7.0
         version: 0.7.0
+      passport-custom:
+        specifier: 1.1.1
+        version: 1.1.1
       passport-github2:
         specifier: 0.1.12
         version: 0.1.12
@@ -9937,6 +9940,10 @@ packages:
 
   pascal-case@3.1.2:
     resolution: {integrity: sha512-uWlGT3YSnK9x3BQJaOdcZwrnV6hPpd8jFH1/ucpiLRPh/2zCVJKS19E4GvYHvaCcACn3foXZ0cLB9Wrx1KGe5g==}
+
+  passport-custom@1.1.1:
+    resolution: {integrity: sha512-/2m7jUGxmCYvoqenLB9UrmkCgPt64h8ZtV+UtuQklZ/Tn1NpKBeOorCYkB/8lMRoiZ5hUrCoMmDtxCS/d38mlg==}
+    engines: {node: '>= 0.10.0'}
 
   passport-github2@0.1.12:
     resolution: {integrity: sha512-3nPUCc7ttF/3HSP/k9sAXjz3SkGv5Nki84I05kSQPo01Jqq1NzJACgMblCK0fGcv9pKCG/KXU3AJRDGLqHLoIw==}
@@ -22910,6 +22917,10 @@ snapshots:
     dependencies:
       no-case: 3.0.4
       tslib: 2.8.1
+
+  passport-custom@1.1.1:
+    dependencies:
+      passport-strategy: 1.0.0
 
   passport-github2@0.1.12:
     dependencies:

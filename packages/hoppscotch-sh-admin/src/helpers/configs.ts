@@ -4,7 +4,7 @@ import { InfraConfigEnum } from './backend/graphql';
 // Check if any input validation has failed
 export const hasInputValidationFailed = ref(false);
 
-export type SsoAuthProviders = 'google' | 'microsoft' | 'github';
+export type SsoAuthProviders = 'google' | 'microsoft' | 'github' | 'feishu';
 
 export type ServerConfigs = {
   providers: {
@@ -37,6 +37,16 @@ export type ServerConfigs = {
         callback_url: string;
         scope: string;
         tenant: string;
+      };
+    };
+    feishu: {
+      name: SsoAuthProviders;
+      enabled: boolean;
+      fields: {
+        client_id: string;
+        client_secret: string;
+        callback_url: string;
+        scope: string;
       };
     };
   };
@@ -160,6 +170,25 @@ export const MICROSOFT_CONFIGS: Config[] = [
   {
     name: InfraConfigEnum.MicrosoftTenant,
     key: 'tenant',
+  },
+];
+
+export const FEISHU_CONFIGS: Config[] = [
+  {
+    name: InfraConfigEnum.FeishuClientId,
+    key: 'client_id',
+  },
+  {
+    name: InfraConfigEnum.FeishuClientSecret,
+    key: 'client_secret',
+  },
+  {
+    name: InfraConfigEnum.FeishuCallbackUrl,
+    key: 'callback_url',
+  },
+  {
+    name: InfraConfigEnum.FeishuScope,
+    key: 'scope',
   },
 ];
 
@@ -299,6 +328,7 @@ export const ALL_CONFIGS = [
   GOOGLE_CONFIGS,
   MICROSOFT_CONFIGS,
   GITHUB_CONFIGS,
+  FEISHU_CONFIGS,
   MAIL_CONFIGS,
   CUSTOM_MAIL_CONFIGS,
   DATA_SHARING_CONFIGS,

@@ -119,22 +119,22 @@ const providerConfigFields = <ProviderFieldMetadata[]>[
   {
     name: t('configs.auth_providers.client_id'),
     key: 'client_id',
-    applicableProviders: ['google', 'github', 'microsoft'],
+    applicableProviders: ['google', 'github', 'microsoft', 'feishu'],
   },
   {
     name: t('configs.auth_providers.client_secret'),
     key: 'client_secret',
-    applicableProviders: ['google', 'github', 'microsoft'],
+    applicableProviders: ['google', 'github', 'microsoft', 'feishu'],
   },
   {
     name: t('configs.auth_providers.callback_url'),
     key: 'callback_url',
-    applicableProviders: ['google', 'github', 'microsoft'],
+    applicableProviders: ['google', 'github', 'microsoft', 'feishu'],
   },
   {
     name: t('configs.auth_providers.scope'),
     key: 'scope',
-    applicableProviders: ['google', 'github', 'microsoft'],
+    applicableProviders: ['google', 'github', 'microsoft', 'feishu'],
   },
   {
     name: t('configs.auth_providers.tenant'),
@@ -162,6 +162,12 @@ const maskState = reactive<Record<SsoAuthProviders, ProviderFields>>({
     callback_url: true,
     scope: true,
     tenant: true,
+  },
+  feishu: {
+    client_id: true,
+    client_secret: true,
+    callback_url: true,
+    scope: true,
   },
 });
 

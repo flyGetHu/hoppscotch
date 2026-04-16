@@ -72,6 +72,22 @@ export class SaveOnboardingConfigRequest {
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
+  [InfraConfigEnum.FEISHU_CLIENT_ID]: string;
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  [InfraConfigEnum.FEISHU_CLIENT_SECRET]: string;
+  @ApiPropertyOptional()
+  @IsOptional()
+  [InfraConfigEnum.FEISHU_CALLBACK_URL]: string;
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  [InfraConfigEnum.FEISHU_SCOPE]: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
   [InfraConfigEnum.MAILER_SMTP_ENABLE]: string;
   @ApiPropertyOptional()
   @IsOptional()
@@ -168,6 +184,19 @@ export class GetOnboardingConfigResponse {
   @ApiProperty()
   @Expose()
   [InfraConfigEnum.MICROSOFT_TENANT]: string;
+
+  @ApiProperty()
+  @Expose()
+  [InfraConfigEnum.FEISHU_CLIENT_ID]: string;
+  @ApiProperty()
+  @Expose()
+  [InfraConfigEnum.FEISHU_CLIENT_SECRET]: string;
+  @ApiProperty()
+  @Expose()
+  [InfraConfigEnum.FEISHU_CALLBACK_URL]: string;
+  @ApiProperty()
+  @Expose()
+  [InfraConfigEnum.FEISHU_SCOPE]: string;
 
   @ApiProperty()
   @Expose()

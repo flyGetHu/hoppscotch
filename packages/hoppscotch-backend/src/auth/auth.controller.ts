@@ -24,6 +24,7 @@ import { isValidLocalhostRedirectUri } from './redirect-uri.validator';
 import { GoogleSSOGuard } from './guards/google-sso.guard';
 import { GithubSSOGuard } from './guards/github-sso.guard';
 import { MicrosoftSSOGuard } from './guards/microsoft-sso.guard';
+import { FeishuSSOGuard } from './guards/feishu-sso.guard';
 import { ThrottlerBehindProxyGuard } from 'src/guards/throttler-behind-proxy.guard';
 import { SkipThrottle } from '@nestjs/throttler';
 import { AUTH_PROVIDER_NOT_SPECIFIED } from 'src/errors';
@@ -176,6 +177,44 @@ export class AuthController {
       authTokens.right,
       true,
       req.authInfo.state.redirect_uri,
+      this.configService,
+    );
+  }
+
+  /**
+   ** Route to initiate SSO auth via Feishu
+   */
+  @Get('feishu')
+  @UseGuards(FeishuSSOGuard)
+  async feishuAuth(@Request() req) {}
+
+  /**
+   ** Callback URL for Feishu SSO
+   * @see https://open.feishu.cn/document/common-capabilities/sso/web-application-sso/web-app-overview
+   */
+  @Get('feishu/callback')
+  @SkipThrottle()
+  @UseGuards(FeishuSSOGuard)
+  @UseInterceptors(UserLastLoginInterceptor)
+  async feishuAuthRedirect(@Request() req, @Res() res) {
+    const authTokens = await this.authService.generateAuthTokens(req.user.uid);
+    if (E.isLeft(authTokens)) throwHTTPErr(authTokens.left);
+    // Fallback: parse state from query string (passport-custom doesn't set req.authInfo)
+    let redirectUri: string | null = null;
+    try {
+      const stateData =
+        typeof req.query.state === 'string'
+          ? JSON.parse(decodeURIComponent(req.query.state))
+          : {};
+      redirectUri = stateData?.redirect_uri || null;
+    } catch {
+      // ignore parse error, use null
+    }
+    authCookieHandler(
+      res,
+      authTokens.right,
+      true,
+      redirectUri,
       this.configService,
     );
   }

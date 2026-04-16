@@ -157,6 +157,7 @@ import IconEmail from "~icons/auth/email"
 import IconGithub from "~icons/auth/github"
 import IconGoogle from "~icons/auth/google"
 import IconMicrosoft from "~icons/auth/microsoft"
+import IconFeishu from "~icons/auth/feishu"
 import IconArrowLeft from "~icons/lucide/arrow-left"
 import IconFileText from "~icons/lucide/file-text"
 
@@ -185,6 +186,7 @@ const isLoadingAllowedAuthProviders = ref(true)
 const signingInWithGoogle = ref(false)
 const signingInWithGitHub = ref(false)
 const signingInWithMicrosoft = ref(false)
+const signingInWithFeishu = ref(false)
 const signingInWithEmail = ref(false)
 const mode = ref("sign-in")
 
@@ -337,6 +339,19 @@ const signInWithMicrosoft = async () => {
   signingInWithMicrosoft.value = false
 }
 
+const signInWithFeishu = async () => {
+  signingInWithFeishu.value = true
+
+  try {
+    await platform.auth.signInUserWithFeishu()
+  } catch (e) {
+    console.error(e)
+    toast.error(`${t("error.something_went_wrong")}`)
+  }
+
+  signingInWithFeishu.value = false
+}
+
 const signInWithEmail = async () => {
   signingInWithEmail.value = true
 
@@ -385,6 +400,13 @@ const authProvidersAvailable: AuthProviderItem[] = [
     label: t("auth.continue_with_microsoft"),
     action: signInWithMicrosoft,
     isLoading: signingInWithMicrosoft,
+  },
+  {
+    id: "FEISHU",
+    icon: IconFeishu,
+    label: t("auth.continue_with_feishu"),
+    action: signInWithFeishu,
+    isLoading: signingInWithFeishu,
   },
   {
     id: "EMAIL",

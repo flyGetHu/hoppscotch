@@ -84,6 +84,12 @@ async function signInUserWithMicrosoftFB() {
   })
 }
 
+async function signInUserWithFeishuFB() {
+  await Io.openExternalLink({
+    url: `${import.meta.env.VITE_BACKEND_API_URL}/auth/feishu?redirect_uri=desktop`,
+  })
+}
+
 async function getInitialUserDetails(): Promise<
   GQLResponse | { error: string }
 > {
@@ -444,6 +450,10 @@ export const def: AuthPlatformDef = {
 
   async signInUserWithMicrosoft() {
     await signInUserWithMicrosoftFB()
+  },
+
+  async signInUserWithFeishu() {
+    await signInUserWithFeishuFB()
   },
 
   async signInWithEmailLink(_email: string, url: string) {
