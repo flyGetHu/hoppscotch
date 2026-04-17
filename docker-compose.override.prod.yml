@@ -11,6 +11,8 @@ services:
   hoppscotch-db:
     image: postgres:15-alpine
     ports: []                          # 不暴露 DB 端口
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data  # 数据持久化到宿主机
     environment:
       POSTGRES_USER: hoppscotch
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-hoppscotch}
